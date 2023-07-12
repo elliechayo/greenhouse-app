@@ -17,6 +17,7 @@ export default function Shop() {
   const [products, setProducts] = useState(null);
   const [productsCopy, setProductsCopy] = useState(null);
   const { data: productsData, loading, error } = useQuery(GET_ALL_PRODUCTS);
+  
   if (loading) <>Loading...</>;
   if (error) toast.error(error);
   if (productsData?.products && products === null) {

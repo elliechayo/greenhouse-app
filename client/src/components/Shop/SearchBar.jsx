@@ -24,27 +24,27 @@ export default function SearchBar({
   const categories = [
     {
       id: 0,
-      label: "None",
+      label: "All Products",
       value: "All Products",
     },
     {
       id: 1,
-      label: "Category 1",
+      label: "Fig Trees",
       value: "category-1",
     },
     {
       id: 2,
-      label: "Category 2",
+      label: "Maple Trees",
       value: "category-2",
     },
     {
       id: 3,
-      label: "Category 3",
+      label: "Shrub Trees",
       value: "category-3",
     },
     {
       id: 4,
-      label: "Category 4",
+      label: "Fruits Trees",
       value: "category-4",
     },
   ];
