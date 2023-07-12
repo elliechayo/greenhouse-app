@@ -13,11 +13,17 @@ import SearchBar from "../components/Shop/SearchBar";
 import SectionTitle from "../components/shared/SectionTitle";
 
 export default function Shop() {
-  const [selectedCategory, setSelectedCategory] = useState("category-1");
+  const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [products, setProducts] = useState(null);
   const [productsCopy, setProductsCopy] = useState(null);
-  const { data: productsData, loading, error } = useQuery(GET_ALL_PRODUCTS);
-  
+  const {
+    data: productsData,
+    loading,
+    error,
+  } = useQuery(GET_ALL_PRODUCTS, {
+    fetchPolicy: "no-cache",
+  });
+
   if (loading) <>Loading...</>;
   if (error) toast.error(error);
   if (productsData?.products && products === null) {
