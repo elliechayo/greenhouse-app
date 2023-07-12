@@ -84,7 +84,7 @@ export default function ProductCard({ product, user }) {
         </Box>
       </Stack>
       <Stack className="text-section">
-        <h3 className="title">{product.title}</h3>
+        <h3 className="title">{product.name}</h3>
         <h2 className="price">${product.price}</h2>
         <p>{"⭐".repeat(product.rating)}</p>
       </Stack>
