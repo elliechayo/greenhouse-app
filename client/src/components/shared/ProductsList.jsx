@@ -22,13 +22,18 @@ export default function ProductsList({ productsCount, products, setProducts }) {
     if (!val) {
       return;
     }
-    const newProducts = [];
-    for (let i = 0; i < products.length; i++) {
-      if (products[i].category === val) {
-        newProducts.unshift(products[i]);
-      } else {
-        newProducts.push(products[i]);
-      }
+    let newProducts = [...products];
+
+    if (val === "low-to-high") {
+      newProducts = newProducts.sort((a, b) =>
+        Number(a.price) > Number(b.price) ? 1 : -1
+      );
+    } else if (val === "high-to-low") {
+      newProducts = newProducts.sort((a, b) =>
+        Number(b.price) > Number(a.price) ? 1 : -1
+      );
+    } else if (val === "best-seller") {
+      newProducts = newProducts.sort((a, b) => (b.rating > a.rating ? 1 : -1));
     }
     setProducts(newProducts);
   };
@@ -37,9 +42,9 @@ export default function ProductsList({ productsCount, products, setProducts }) {
     <div className="products-list">
       <FilterWrapper>
         <Select placeholder="Sort By" maxW="200px" onChange={handleSort}>
-          <option value="category-1">Best Seller</option>
-          <option value="category-2">Price: Low-High</option>
-          <option value="category-3">Price: High-Low</option>
+          <option value="best-seller">Best Seller</option>
+          <option value="low-to-high">Price: Low-High</option>
+          <option value="high-to-low">Price: High-Low</option>
         </Select>
       </FilterWrapper>
       <ProductsUL>
