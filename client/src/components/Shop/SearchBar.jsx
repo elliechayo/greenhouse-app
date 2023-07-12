@@ -55,7 +55,7 @@ export default function SearchBar({
       setProducts(productsCopy);
       return;
     }
-    setSelectedCategory(val);
+    setSelectedCategory(categories.find((e) => e.value === val).label);
     setProducts(productsCopy?.filter((e) => e.category === val));
   };
 
@@ -83,7 +83,7 @@ export default function SearchBar({
               <Select onChange={changeCategory}>
                 {categories.map((c) => {
                   return (
-                    <option key={c.id} value={c.value}>
+                    <option key={c.id} value={c.value} name={c.label}>
                       {c.label}
                     </option>
                   );
