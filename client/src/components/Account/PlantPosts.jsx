@@ -41,7 +41,7 @@ export default function PlantPosts({ user }) {
                 <td>{p.stockQuantity > 0 ? "Posted" : "Sold"}</td>
                 <td>${p.price}</td>
                 <td>
-                  <Link to={`/products/${p.id}`}>View</Link>
+                  <Link to={p.link}>View</Link>
                   <Link to={p.deleteLink}>Delete</Link>
                 </td>
               </tr>

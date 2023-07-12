@@ -10,10 +10,10 @@ connectDB(MONGO_URI);
 const products = [
   {
     name: "Test Product 1",
-    category: "category-1",
+    category: "Maple Trees",
     description: "This is a test product",
     longDescription: "This is a test product",
-    price: "23.75",
+    price: "20.75",
     image: "test.jpg",
     stockQuantity: 2,
     rating: 4,
@@ -21,10 +21,10 @@ const products = [
   },
   {
     name: "Test Product 2",
-    category: "category-2",
+    category: "Shrub Trees",
     description: "This is a test product",
     longDescription: "This is a test product",
-    price: "23.75",
+    price: "75.65",
     image: "test.jpg",
     stockQuantity: 2,
     rating: 3,
@@ -32,7 +32,7 @@ const products = [
   },
   {
     name: "Test Product 3",
-    category: "category-3",
+    category: "Fruit Trees",
     description: "This is a test product",
     longDescription: "This is a test product",
     price: "23.75",
@@ -43,7 +43,7 @@ const products = [
   },
   {
     name: "Test Product 4",
-    category: "category-4",
+    category: "Cedar Tree",
     description: "This is a test product",
     longDescription: "This is a test product",
     price: "23.75",
@@ -54,7 +54,7 @@ const products = [
   },
   {
     name: "Test Product 5",
-    category: "category-1",
+    category: "Cedar Tree",
     description: "This is a test product",
     longDescription: "This is a test product",
     price: "23.75",
@@ -65,10 +65,10 @@ const products = [
   },
   {
     name: "Test Product 6",
-    category: "category-2",
+    category: "Maple Trees",
     description: "This is a test product",
     longDescription: "This is a test product",
-    price: "23.75",
+    price: "100.55",
     image: "test.jpg",
     stockQuantity: 2,
     rating: 5,
@@ -76,10 +76,10 @@ const products = [
   },
   {
     name: "Test Product 7",
-    category: "category-3",
+    category: "Fruit Trees",
     description: "This is a test product",
     longDescription: "This is a test product",
-    price: "23.75",
+    price: "15.99",
     image: "test.jpg",
     stockQuantity: 2,
     rating: 3,
@@ -87,7 +87,7 @@ const products = [
   },
   {
     name: "Test Product 8",
-    category: "category-4",
+    category: "Maple Trees",
     description: "This is a test product",
     longDescription: "This is a test product",
     price: "23.75",
@@ -96,7 +96,7 @@ const products = [
   },
   {
     name: "Test Product 9",
-    category: "category-1",
+    category: "Shrub Trees",
     description: "This is a test product",
     longDescription: "This is a test product",
     price: "23.75",

@@ -80,7 +80,7 @@ export default function PostAPlant({ user }) {
             value={formFields.category}
             onChange={handleInputChange}
           >
-            <option value="category-1">Fig Trees</option>
+            <option value="category-1">Cedar Trees</option>
             <option value="category-2">Maple Trees</option>
             <option value="category-3">Shrub Tress</option>
             <option value="category-4">Fruit Trees</option>

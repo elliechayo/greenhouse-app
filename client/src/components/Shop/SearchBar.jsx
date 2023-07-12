@@ -29,7 +29,7 @@ export default function SearchBar({
     },
     {
       id: 1,
-      label: "Fig Trees",
+      label: "Cedar Trees",
       value: "category-1",
     },
     {
