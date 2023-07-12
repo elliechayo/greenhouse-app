@@ -9,8 +9,8 @@ import HeroImage from "../assets/searchbackground.png";
 export default function About() {
   return (
     <MainWrapper>
-      <SectionTitle title="About Us" />
       <img src={HeroImage} alt="" />
+      <SectionTitle title="About Us" />
       <div className="content">
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima sit
