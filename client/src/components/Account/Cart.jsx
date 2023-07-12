@@ -146,8 +146,10 @@ const SectionWrapper = styled.section`
     }
 
     td button {
-      background: #333;
+      background: var(--green-medium);
+      border-radius: 5px;
       color: white;
+      font-weight: bold;
       padding: 10px;
     }
 
