@@ -35,8 +35,8 @@ const CategoryBox = styled(Box)`
 export default function Category({ image, title, subtitle, link }) {
   return (
     <CategoryBox imagepath={image}>
-      <p>{subtitle}</p>
-      <h3>{title}</h3>
+      <p>{title}</p>
+      <h3>{subtitle}</h3>
       <Link to={link}>Shop Now</Link>
     </CategoryBox>
   );
