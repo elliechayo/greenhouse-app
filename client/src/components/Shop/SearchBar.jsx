@@ -15,8 +15,18 @@ import { PiMagnifyingGlass } from "react-icons/pi";
 // assets
 import BackgroundImage from "../../assets/searchbackground.png";
 
-export default function SearchBar({ setSelectedCategory }) {
+export default function SearchBar({
+  setSelectedCategory,
+  setProducts,
+  productsCopy,
+  search,
+}) {
   const categories = [
+    {
+      id: 0,
+      label: "None",
+      value: "All Products",
+    },
     {
       id: 1,
       label: "Category 1",
@@ -40,12 +50,33 @@ export default function SearchBar({ setSelectedCategory }) {
   ];
 
   const changeCategory = (event) => {
-    setSelectedCategory(event.target.value);
+    const val = event.target.value;
+    if (val === "All Products") {
+      setProducts(productsCopy);
+      return;
+    }
+    setSelectedCategory(val);
+    setProducts(productsCopy?.filter((e) => e.category === val));
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const searchTerm = formData.get("searchTerm");
+    if (!searchTerm) {
+      setProducts(productsCopy);
+      return;
+    }
+    setProducts(
+      productsCopy?.filter((e) =>
+        e.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
   };
 
   return (
     <SearchBarWrapper as="section" imagepath={BackgroundImage}>
-      <form>
+      <form onSubmit={handleFormSubmit}>
         <FormControlWrapper>
           <InputGroup className="input-group">
             <InputLeftAddon className="left">
@@ -60,7 +91,11 @@ export default function SearchBar({ setSelectedCategory }) {
               </Select>
               <p className="divider-p">|</p>
             </InputLeftAddon>
-            <Input type="search" placeholder="Enter your search query..." />
+            <Input
+              type="search"
+              placeholder="Enter your search query..."
+              name="searchTerm"
+            />
             <InputRightAddon className="right">
               <button type="submit">
                 <PiMagnifyingGlass fontSize={22} />

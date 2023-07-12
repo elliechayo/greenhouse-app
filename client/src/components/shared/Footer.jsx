@@ -80,13 +80,13 @@ export default function Footer() {
                 <Link to="/login">LogIn</Link>
               </li>
               <li>
-                <Link to="/wishlist">WishList</Link>
+                <Link to="/account?view=wishlist">WishList</Link>
               </li>
               <li>
-                <Link to="/profile">Personal Info</Link>
+                <Link to="/account?view=personalInfo">Personal Info</Link>
               </li>
               <li>
-                <Link to="/orders">Orders</Link>
+                <Link to="/account?view=orders">Orders</Link>
               </li>
             </ul>
           </LinksContainer>

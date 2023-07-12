@@ -1,8 +1,14 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { backend_URL } from "../config";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:5000/graphql', // Replace with your GraphQL server endpoint
+  uri: backend_URL + "/graphql",
   cache: new InMemoryCache(),
+  defaultOptions: {
+    query: {
+      fetchPolicy: "no-cache",
+    },
+  },
 });
 
 export default client;

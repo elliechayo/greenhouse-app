@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "@emotion/styled";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -9,14 +9,14 @@ import {
   InputGroup,
   InputRightAddon,
 } from "@chakra-ui/react";
-import { LOG_IN_USER } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../graphql/queries";
 import { toast } from "react-toastify";
 import UserContext from "../context/user/userContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [logInUser, { loading, error }] = useMutation(LOG_IN_USER);
+  // context
   const { dispatch } = useContext(UserContext);
 
   const initialFormFields = {
@@ -33,46 +33,37 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
-  if (loading) return <div></div>;
-  if (error) console.log(error.message);
-
-  async function submitHandler(e) {
-    e.preventDefault();
-    let loggedInUser;
-
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
     try {
-      loggedInUser = await logInUser({
+      const newUser = await loginUser({
         variables: formFields,
       });
+      if (newUser?.data?.loginUser?.token) {
+        const { token, user: userFromDB } = newUser.data.loginUser;
+        // set the token in local storage for persistence
+        localStorage.setItem("greenhouseUserToken", token);
+        // set the user in state
+        dispatch({
+          type: "SET_USER",
+          payload: { user: userFromDB },
+        });
+
+        navigate("/");
+        toast.success("You are logged in");
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return;
     }
-
-    if (loggedInUser?.data?.loginUser?.token) {
-      // success
-      const { token } = loggedInUser.data.loginUser;
-
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 1); // Expires in 1 day
-      document.cookie = `token=${token}; expires=${expiryDate.toUTCString()}; path=/`;
-      toast.success("You are logged in");
-      dispatch({
-        type: "SET_USER",
-        payload: {
-          user: loggedInUser.data.loginUser.user,
-        },
-      });
-      navigate("/");
-    } else {
-      toast.error("Unable to create user");
-    }
-  }
+  };
 
   return (
     <Main>
       <h2 className="title">Log in to your account</h2>
-      <LoginFormWrapper onSubmit={submitHandler} as="section">
-        <form>
+      <LoginFormWrapper as="section">
+        <form onSubmit={handleFormSubmit}>
           {error && (
             <FormErrorWrapper className="form-error">
               <p>{error.message || "Authentication Failed"}</p>
@@ -80,7 +71,12 @@ export default function Login() {
           )}
           <FormControlWrapper>
             <FormLabel>Email</FormLabel>
-            <Input type="email" name="email" onChange={handleInputChange} />
+            <Input
+              type="email"
+              name="email"
+              value={formFields.email}
+              onChange={handleInputChange}
+            />
           </FormControlWrapper>
 
           <FormControlWrapper>
@@ -89,6 +85,7 @@ export default function Login() {
               <Input
                 type={showPassword ? "text" : "password"}
                 name="password"
+                value={formFields.password}
                 onChange={handleInputChange}
               />
               <InputRightAddon onClick={togglePassword}>Show</InputRightAddon>
@@ -131,15 +128,26 @@ const LoginFormWrapper = styled(Box)`
     & a {
       text-align: center;
       display: block;
+      color: var(--green-medium);
+     
+      &:hover {
+        color: darkgreen;
+      }
     }
 
     & button[type="submit"] {
       padding: 10px 18px;
       border-radius: 5px;
-      background: #333;
+      background: var(--green-medium);
       color: white;
       border: none;
       outline: none;
+
+      &:hover {
+        background: darkgreen;
+      
+
+
     }
   }
 
@@ -149,6 +157,8 @@ const LoginFormWrapper = styled(Box)`
 
     & a {
       color: var(--green-medium);
+      &:hover {
+        color: darkgreen;
     }
   }
 

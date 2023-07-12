@@ -1,23 +1,23 @@
+import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
+import { GET_PRODUCTS_BY_USER } from "../../graphql/queries";
+import { useState } from "react";
 
-export default function PlantPosts() {
-  const plantPosts = [
-    {
-      id: "#5364",
-      date: "Mar 27, 2019",
-      status: "Sold",
-      price: "162.00",
-      link: "",
-    },
-    {
-      id: "#3464",
-      date: "Apr 30, 2019",
-      status: "Posted",
-      price: "107.00",
-      link: "",
-    },
-  ];
+export default function PlantPosts({ user }) {
+  const [plantPosts, setPlantPosts] = useState(null);
+  const { data, loading } = useQuery(GET_PRODUCTS_BY_USER, {
+    variables: { id: user.id },
+    fetchPolicy: "no-cache",
+  });
+
+  if (data && !plantPosts) {
+    setPlantPosts(data.productsByUser);
+  }
+
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <SectionWrapper>
@@ -33,13 +33,13 @@ export default function PlantPosts() {
           </tr>
         </thead>
         <tbody>
-          {plantPosts.map((p) => {
+          {plantPosts?.map((p) => {
             return (
               <tr key={p.id}>
                 <td>{p.id}</td>
-                <td>{p.date}</td>
-                <td>{p.status}</td>
-                <td>{p.price}</td>
+                <td>{new Date(+p.createdAt).toDateString()}</td>
+                <td>{p.stockQuantity > 0 ? "Posted" : "Sold"}</td>
+                <td>${p.price}</td>
                 <td>
                   <Link to={p.link}>View</Link>
                   <Link to={p.deleteLink}>Delete</Link>

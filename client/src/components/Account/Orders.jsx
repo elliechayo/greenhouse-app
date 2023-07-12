@@ -1,23 +1,22 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
+import { GET_ORDERS_BY_USER } from "../../graphql/queries";
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
 
-export default function Orders() {
-  const orders = [
-    {
-      order: "#5364",
-      date: "Mar 27, 2019",
-      status: "On Hold",
-      total: "$162.00 for 2 items",
-      link: "",
-    },
-    {
-      order: "#3464",
-      date: "Apr 30, 2019",
-      status: "On Hold",
-      total: "$107.00 for 2 items",
-      link: "",
-    },
-  ];
+export default function Orders({ user }) {
+  const [orders, setOrders] = useState(null);
+  const { data, loading } = useQuery(GET_ORDERS_BY_USER, {
+    variables: { id: user.id },
+    fetchPolicy: "no-cache",
+  });
+
+  if (data && !orders) {
+    setOrders(data.ordersByUser);
+  }
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <SectionWrapper>
@@ -33,15 +32,17 @@ export default function Orders() {
           </tr>
         </thead>
         <tbody>
-          {orders.map((p) => {
+          {orders?.map((o) => {
             return (
-              <tr key={p.order}>
-                <td>{p.order}</td>
-                <td>{p.date}</td>
-                <td>{p.status}</td>
-                <td>{p.total}</td>
+              <tr key={o.id}>
+                <td>{o.id}</td>
+                <td>{new Date(+o.createdAt).toDateString()}</td>
+                <td>{o.status}</td>
                 <td>
-                  <Link to={p.link}>View</Link>
+                  ${o.totalPrice} for {o.products.length} items
+                </td>
+                <td>
+                  <Link to="/orders">View</Link>
                 </td>
               </tr>
             );

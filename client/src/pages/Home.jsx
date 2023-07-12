@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-
-// import productsData from "../data/products";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_PRODUCTS } from "../graphql/queries";
 
 // assets
 import HeroBackground from "../assets/hero.jpeg";
@@ -23,15 +23,17 @@ import SectionTitle from "../components/shared/SectionTitle";
 import BlogPostCard from "../components/Home/BlogPostCard";
 import ProductsList from "../components/shared/ProductsList";
 import { toast } from "react-toastify";
-import { GET_ALL_PRODUCTS } from "../graphql/queries";
-import { useQuery } from "@apollo/client";
+import { useState } from "react";
 
 export default function Home() {
-  const { loading, error, data } = useQuery(GET_ALL_PRODUCTS);
+  const navigate = useNavigate();
+  const { data: productsData, loading, error } = useQuery(GET_ALL_PRODUCTS);
+  const [products, setProducts] = useState(null);
+  if (loading) <>Loading...</>;
+  if (error) toast.error(error);
 
-  if (loading) return <div></div>;
-  if (error) {
-    toast.error(error.message || "Something went wrong");
+  if (products === null && productsData?.products) {
+    setProducts(productsData.products);
   }
 
   const handleSubscribeNow = (event) => {
@@ -63,9 +65,9 @@ export default function Home() {
     },
     {
       id: 4,
-      title: "Category 4",
+      title: "",
       link: "/",
-      subtitle: "Trending Products",
+      subtitle: "Fig Trees",
       image: Category4Image,
     },
   ];
@@ -106,7 +108,7 @@ export default function Home() {
         <Box maxW="500px">
           <SubTitle>WELCOME TO GREENHOUSE</SubTitle>
           <HeroTitle>Your Online Plant Paradise</HeroTitle>
-          <CTAButton>Shop Now &gt;</CTAButton>
+          <CTAButton onClick={() => navigate("/shop")}>Shop Now &gt;</CTAButton>
         </Box>
       </HeroWrapper>
 
@@ -128,15 +130,20 @@ export default function Home() {
       {/* Products Section */}
       <ProductsWrapper as="section">
         <SectionTitle title="Our Products" />
-        <ProductsList productsCount={6} products={data.products} />
+        {productsData?.products?.length > 0 && (
+          <ProductsList
+            productsCount={6}
+            products={products}
+            setProducts={setProducts}
+          />
+        )}
       </ProductsWrapper>
 
       {/* Blog Post Section */}
       <BlogPostWrapper as="section">
         <SectionTitle title="From Our Blog" />
         <p className="subtitle">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla
-          dolores fugiat officiis distinctio impedit harum.
+        Explore a treasure trove of plant care tips, gardening inspiration, and captivating articles that will nurture your love for all things botanical.
         </p>
         <BlogPostCards>
           {blogPosts.map(
@@ -163,7 +170,7 @@ export default function Home() {
         <SellPlantWrapper imagepath={PostPlantImage}>
           <Box as="div">
             <h3>Post a Plant</h3>
-            <p>Find you plant the home it deserves</p>
+            <p>Find your plant the home it deserves</p>
             <Link to="/how-to-post-a-pant">Learn How &gt;</Link>
           </Box>
         </SellPlantWrapper>
@@ -176,8 +183,7 @@ export default function Home() {
           Get <span className="strong">20% Off</span> Your Next Order
         </h3>
         <p className="small">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
-          minus.
+        Unlock exclusive discounts and stay in the loop with our latest offers by subscribing to our newsletter.
         </p>
         <form>
           <input type="email" placeholder="Enter Your Email..." />
@@ -219,6 +225,10 @@ const CTAButton = styled.button`
   border-radius: 5px;
   margin-top: 20px;
   font-weight: bold;
+
+  /* Hover styles */
+  &:hover {
+    background: darkgreen;
 `;
 
 const HeroWrapper = styled(Box)`
@@ -259,6 +269,8 @@ const BlogPostWrapper = styled(Box)`
     font-weight: 600;
     color: gray;
     font-size: 14px;
+
+   
   }
 `;
 
@@ -268,6 +280,8 @@ const BlogPostCards = styled.ul`
   justify-content: center;
   align-items: center;
   gap: 30px;
+ 
+  
 `;
 
 const SubscribeWrapper = styled(Box)`
@@ -313,10 +327,17 @@ const SubscribeWrapper = styled(Box)`
       padding: 18px;
       background: var(--green-medium);
       color: white;
+      font-weight: bold;
+      font-size: 18px;
       border-radius: 5px;
       border: none;
       outline: none;
+      
+      /* Hover styles */
+      &:hover {
+        background: darkgreen;
     }
+   
   }
 `;
 
@@ -356,6 +377,10 @@ const SellPlantWrapper = styled(Box)`
     display: inline-block;
     border-radius: 5px;
     margin-top: 30px;
+
+    /* Hover styles */
+    &:hover {
+      background: darkgreen;
   }
 
   @media (max-width: 768px) {

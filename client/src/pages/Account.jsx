@@ -1,6 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import UserContext from "../context/user/userContext";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../graphql/queries";
 
 // components
 import WishList from "../components/Account/WishList";
@@ -8,22 +11,50 @@ import PersonalInfo from "../components/Account/PersonalInfo";
 import PostAPlant from "../components/Account/PostAPlant";
 import PlantPosts from "../components/Account/PlantPosts";
 import Orders from "../components/Account/Orders";
-import { useState } from "react";
-import UserContext from "../context/user/userContext";
+import Cart from "../components/Account/Cart";
+import { toast } from "react-toastify";
 
 export default function Account() {
-  const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { pathname } = useLocation();
+  const [view, setView] = useState(searchParams.get("view"));
+  const [user, setUser] = useState({});
+  const { user: oldUser, dispatch } = useContext(UserContext);
+  const { data, loading } = useQuery(GET_USER, {
+    variables: {
+      id: oldUser.id,
+    },
+  });
+
   useEffect(() => {
-    if (!user.id) {
-      navigate("/login");
-    }
-  }, [navigate, user]);
-  console.log(user);
-  const [view, setView] = useState("wishList");
+    setView(searchParams.get("view"));
+  }, [pathname, searchParams]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("greenhouseUserToken");
+    dispatch({
+      type: "LOGOUT",
+    });
+    navigate("/");
+    toast.success("you are logged out");
+  };
+
+  if (data && !user.id) {
+    setUser(data.user);
+  }
+
+  if (!oldUser.id) {
+    navigate("/login");
+  }
+
+  if (!user.id || loading) {
+    return <>Loading...</>;
+  }
+
   return (
     <MainWrapper>
-      <h2 className="username">Hello {user?.firstName},</h2>
+      <h2 className="username">Hello {oldUser.firstName},</h2>
       <div className="tabs">
         <ul className="tab-titles">
           <li
@@ -33,8 +64,8 @@ export default function Account() {
             Personal Info
           </li>
           <li
-            className={view === "wishList" ? "active" : ""}
-            onClick={() => setView("wishList")}
+            className={view === "wishlist" || view === null ? "active" : ""}
+            onClick={() => setView("wishlist")}
           >
             Your WishList
           </li>
@@ -43,6 +74,12 @@ export default function Account() {
             onClick={() => setView("orders")}
           >
             Orders
+          </li>
+          <li
+            className={view === "cart" ? "active" : ""}
+            onClick={() => setView("cart")}
+          >
+            Cart
           </li>
           <li
             className={view === "postAPlant" ? "active" : ""}
@@ -56,16 +93,25 @@ export default function Account() {
           >
             My Plant Posts
           </li>
+          <li>
+            <button className="logout-btn" onClick={handleLogout}>
+              Log Out
+            </button>
+          </li>
         </ul>
-        {view === "wishList" && <WishList wishListProp={user.wishlist} />}
-        {view === "personalInfo" && <PersonalInfo />}
-        {view === "myPlantPost" && <PlantPosts />}
-        {view === "postAPlant" && <PostAPlant />}
-        {view === "orders" && <Orders />}
+        {(view === "wishlist" || view === null) && (
+          <WishList user={user} dispatch={dispatch} setUser={setUser} />
+        )}
+        {view === "personalInfo" && (
+          <PersonalInfo user={user} dispatch={dispatch} setUser={setUser} />
+        )}
+        {view === "myPlantPost" && <PlantPosts user={user} />}
+        {view === "postAPlant" && <PostAPlant user={user} />}
+        {view === "orders" && <Orders user={user} />}
+        {view === "cart" && (
+          <Cart user={user} dispatch={dispatch} setUser={setUser} />
+        )}
       </div>
-      <Link to="/logout" className="logout-btn">
-        Log Out
-      </Link>
     </MainWrapper>
   );
 }

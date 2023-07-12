@@ -15,19 +15,18 @@ import {
   Radio,
 } from "@chakra-ui/react";
 import { useMutation } from "@apollo/client";
-import { SIGN_UP_USER } from "../graphql/queries";
+
+// queries
+import { REGISTER_USER } from "../graphql/queries";
 import { toast } from "react-toastify";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [signUpUser, { loading, error }] = useMutation(SIGN_UP_USER);
-
   const initialFormFields = {
     socialTitle: "",
+    email: "",
     firstName: "",
     lastName: "",
-    email: "",
     password: "",
     dateOfBirth: "",
   };
@@ -36,38 +35,36 @@ export default function Register() {
     setFormFields({ ...formFields, [event.target.name]: event.target.value });
   };
 
-  if (loading) return <div></div>;
-
+  const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
 
-  async function submitHandler(e) {
-    e.preventDefault();
-
-    let signedUpUser;
-
+  const [registerUser, { loading, error }] = useMutation(REGISTER_USER);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      signedUpUser = await signUpUser({
-        variables: formFields,
-      });
+      const newUser = await registerUser({ variables: formFields });
+      if (newUser?.data?.registerUser.id) {
+        toast.success("Successfully Registered");
+        toast.success("Login to continue!");
+        // reset the form
+        setFormFields(initialFormFields);
+        // navigate to /login
+        navigate("/login");
+      }
     } catch (error) {
       console.log(error);
       return;
     }
+  };
 
-    if (signedUpUser?.data?.signupUser?.email) {
-      toast.success("Successfully registered. Now login to continue");
-      navigate("/login");
-    } else {
-      toast.error("Something Went Wrong");
-    }
-  }
+  if (loading) return <>Loading...</>;
 
   return (
     <Main>
       <h2 className="title">Create an account</h2>
-      <RegisterFormWrapper onSubmit={submitHandler} as="section">
+      <RegisterFormWrapper as="section">
         {error && (
           <FormErrorWrapper className="form-error">
             <p>{error.message || "Authentication Failed"}</p>
@@ -76,10 +73,10 @@ export default function Register() {
         <p>
           Alread have an account with us? <Link to="/login">Login instead</Link>
         </p>
-        <form>
+        <form onSubmit={handleSubmit}>
           <FormControlWrapper>
-            <FormLabel>Social Title</FormLabel>
-            <RadioGroup>
+            <FormLabel>Title</FormLabel>
+            <RadioGroup name="title" value={formFields.socialTitle}>
               <Stack direction="row">
                 <Radio
                   value="Mr"
@@ -95,23 +92,45 @@ export default function Register() {
                 >
                   Mrs.
                 </Radio>
+                <Radio
+                  value="Miss"
+                  name="socialTitle"
+                  onChange={handleInputChange}
+                >
+                  Miss.
+                </Radio>
               </Stack>
             </RadioGroup>
           </FormControlWrapper>
 
           <FormControlWrapper>
             <FormLabel>First Name</FormLabel>
-            <Input type="text" name="firstName" onChange={handleInputChange} />
+            <Input
+              type="text"
+              name="firstName"
+              onChange={handleInputChange}
+              value={formFields.firstName}
+            />
           </FormControlWrapper>
 
           <FormControlWrapper>
             <FormLabel>Last Name</FormLabel>
-            <Input type="text" name="lastName" onChange={handleInputChange} />
+            <Input
+              type="text"
+              name="lastName"
+              onChange={handleInputChange}
+              value={formFields.lastName}
+            />
           </FormControlWrapper>
 
           <FormControlWrapper>
             <FormLabel>Email</FormLabel>
-            <Input type="email" name="email" onChange={handleInputChange} />
+            <Input
+              type="email"
+              name="email"
+              onChange={handleInputChange}
+              value={formFields.email}
+            />
           </FormControlWrapper>
 
           <FormControlWrapper>
@@ -177,7 +196,9 @@ const RegisterFormWrapper = styled(Box)`
 
   & p a {
     color: var(--green-medium);
+  
   }
+
 
   & form {
     margin-top: 30px;
@@ -187,11 +208,15 @@ const RegisterFormWrapper = styled(Box)`
 
     & button[type="submit"] {
       padding: 12px 18px;
-      background: #333;
+      background: var(--green-medium);
       color: white;
       border-radius: 5px;
       align-self: flex-end;
       margin-top: 20px;
+
+      
+      &:hover {
+        background: darkgreen;
     }
   }
 

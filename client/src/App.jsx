@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { UserProvider } from "./context/user/userContext";
 
 // components
 import Header from "./components/shared/Header";
@@ -20,9 +21,11 @@ import ForgotPassword from "./pages/ForgotPassword";
 import HowToPostAPlant from "./pages/HowToPostAPlant";
 import About from "./pages/About";
 import FAQ from "./pages/FAQ";
+import Failure from "./pages/payment/Failure";
+import Success from "./pages/payment/Success";
+import ScrollToTop from "./components/shared/ScrollToTop";
 
 import * as ServiceWorker from "./serviceWorker";
-import { UserProvider } from "./context/user/userContext";
 
 export default function App() {
   return (
@@ -40,11 +43,14 @@ export default function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/products/:id" element={<EachProduct />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/payment/success" element={<Success />} />
+            <Route path="/payment/failure" element={<Failure />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
             <Route path="/how-to-post-a-pant" element={<HowToPostAPlant />} />
             <Route path="/" element={<Home />} />
           </Routes>
           <Footer />
+          <ScrollToTop />
         </Router>
         <ToastContainer />
       </ChakraProvider>

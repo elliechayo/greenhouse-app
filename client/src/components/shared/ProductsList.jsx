@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
 import { Select } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "../../context/user/userContext";
 
 // components
 import ProductCard from "./ProductCard";
 
-export default function ProductsList({ productsCount, products }) {
+export default function ProductsList({ productsCount, products, setProducts }) {
   const [currentIdx, setCurrentIdx] = useState(0);
+  const { user } = useContext(UserContext);
 
   const changePage = (i, e) => {
     setCurrentIdx(productsCount * i);
@@ -15,13 +17,29 @@ export default function ProductsList({ productsCount, products }) {
     e.target.classList.add("active");
   };
 
+  const handleSort = (e) => {
+    const val = e.target.value;
+    if (!val) {
+      return;
+    }
+    const newProducts = [];
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].category === val) {
+        newProducts.unshift(products[i]);
+      } else {
+        newProducts.push(products[i]);
+      }
+    }
+    setProducts(newProducts);
+  };
+
   return (
     <div className="products-list">
       <FilterWrapper>
-        <Select placeholder="Sort By" maxW="200px">
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+        <Select placeholder="Sort By" maxW="200px" onChange={handleSort}>
+          <option value="category-1">Best Seller</option>
+          <option value="category-2">Price: Low-High</option>
+          <option value="category-3">Price: High-Low</option>
         </Select>
       </FilterWrapper>
       <ProductsUL>
@@ -33,7 +51,9 @@ export default function ProductsList({ productsCount, products }) {
               : currentIdx + productsCount
           )
           .map((product) => {
-            return <ProductCard key={product.id} product={product} />;
+            return (
+              <ProductCard key={product.id} product={product} user={user} />
+            );
           })}
       </ProductsUL>
       <PaginationWrapper>

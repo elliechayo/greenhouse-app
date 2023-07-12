@@ -10,36 +10,21 @@ import BlogPost from "../components/Blog/BlogPost";
 export default function Blog() {
   const blogPost = {
     id: 1,
-    title: "Artist Collaboration With The House 1",
+    title: "Choosing the Perfect Indoor Plants for Your Home",
     image: blogPostImage,
-    author: "Themes PlazaThemes",
-    date: "Feb 28th, 2019",
-    tags: "Fashion",
-    content: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis,
-debitis commodi expedita, asperiores soluta eos nemo aspernatur
-eveniet dolores voluptas, rem optio totam perferendis! Rerum mollitia
-impedit non accusamus ipsam adipisci! Veritatis, alias sequi eius
-voluptatum veniam dicta consequatur impedit animi unde commodi beatae
-quia doloribus, illo placeat qui. Dolor, doloremque? Dolorum,
-doloremque? Minima iure consectetur maxime consequatur sit eaque natus
-et! Alias sint corrupti ab vero eveniet. Possimus, ad. Numquam quaerat
-sunt architecto assumenda autem aliquid, rem accusamus similique
-veritatis voluptas natus blanditiis dolores! Iure, deserunt explicabo
-reprehenderit vitae sed earum minima ipsa odio. Laborum earum quam
-numquam quasi.
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis,
-debitis commodi expedita, asperiores soluta eos nemo aspernatur
-eveniet dolores voluptas, rem optio totam perferendis! Rerum mollitia
-impedit non accusamus ipsam adipisci! Veritatis, alias sequi eius
-voluptatum veniam dicta consequatur impedit animi unde commodi beatae
-quia doloribus, illo placeat qui. Dolor, doloremque? Dolorum,
-doloremque? Minima iure consectetur maxime consequatur sit eaque natus
-et! Alias sint corrupti ab vero eveniet. Possimus, ad. Numquam quaerat
-sunt architecto assumenda autem aliquid, rem accusamus similique
-veritatis voluptas natus blanditiis dolores! Iure, deserunt explicabo
-reprehenderit vitae sed earum minima ipsa odio. Laborum earum quam
-numquam quasi.
+    author: "Erik Smith",
+    date: "Feb 28th, 2023",
+    tags: "Indoor Plants",
+    content: `Bringing the beauty of nature indoors is a delightful way to 
+    enhance your living space while reaping the numerous benefits that plants 
+    offer. However, with the vast array of indoor plants available, it can be 
+    overwhelming to choose the perfect ones for your home. In this blog post, 
+    we will guide you through the process of selecting the ideal indoor plants 
+    that will thrive in your specific environment, catering to your lifestyle 
+    and design preferences. 
+
 `,
+
   };
   return (
     <main>

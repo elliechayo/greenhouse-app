@@ -1,3 +1,11 @@
+import { Link, useParams } from "react-router-dom";
+import { useContext, useState } from "react";
+import {
+  ADD_TO_CART,
+  ADD_TO_WISHLIST,
+  GET_SINGLE_PRODUCT,
+} from "../graphql/queries";
+import { toast } from "react-toastify";
 import styled from "@emotion/styled";
 import {
   Box,
@@ -13,9 +21,9 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-
-// assets
-import ProductImage from "../assets/products/product16.jpg";
+import { useMutation, useQuery } from "@apollo/client";
+import { backend_URL } from "../config";
+import UserContext from "../context/user/userContext";
 
 // icons
 import { PiPencilSimpleLineThin, PiHeartBold } from "react-icons/pi";
@@ -30,27 +38,20 @@ import {
 // components
 import SearchBar from "../components/Shop/SearchBar";
 import SectionTitle from "../components/shared/SectionTitle";
-import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_SINGLE_PRODUCT } from "../graphql/queries";
 
 export default function EachProduct() {
-  const [view, setView] = useState("reviews");
+  const { user } = useContext(UserContext);
+  const [view, setView] = useState("details");
   const [showPanel, setShowPanel] = useState(false);
-  const params = useParams()
-  const { loading, error, data } = useQuery(GET_SINGLE_PRODUCT, {
-    variables: { "productId": params.id },
-    skip: !params.id
-  })
+  const [quantity, setQuantity] = useState(1);
+  const { id } = useParams();
+  const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, {
+    variables: { id },
+  });
+  const [product, setProduct] = useState(null);
+  const [addToCart] = useMutation(ADD_TO_CART);
+  const [addToWishList] = useMutation(ADD_TO_WISHLIST);
 
-  
-  if (loading) return <div></div>;
-  if (error) return <p>Error: {error.message}</p>;
-  
-  const {product} = data
-
-  console.log(product)
   const changeView = (v) => {
     setView(v);
   };
@@ -59,142 +60,201 @@ export default function EachProduct() {
     setShowPanel(!showPanel);
   };
 
-  // const product = {
-  //   image: ProductImage,
-  //   title: "Wayfarer Messenger Bag",
-  //   description:
-  //     "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid culpa accusamus corporis necessitatibus error doloremque quo ea dicta vero tempore.",
-  //   price: "33.90",
-  //   rating: "4",
-  // };
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await addToCart({
+        variables: {
+          productId: id,
+          userId: user.id,
+          quantity,
+        },
+      });
+      if (data?.addToCart) {
+        toast.success("Added to Cart");
+      }
+    } catch (error) {
+      console.log(error.message);
+      if (error.message.toString() === "Product already exists") {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  const handleAddToWishList = async () => {
+    try {
+      const { data } = await addToWishList({
+        variables: {
+          productId: id,
+          userId: user.id,
+        },
+      });
+      if (data?.addToWishList) {
+        toast.success("Added to wishlist");
+      }
+    } catch (error) {
+      console.log(error.message);
+      if (error.message.toString() === "Product already exists") {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  if (loading) {
+    return <>loading...</>;
+  }
+  if (error) {
+    toast.error(error.message);
+  }
+
+  if (data && product === null) {
+    setProduct(data.product);
+  }
+
   return (
-    <main>
-      <SearchBar />
+    product && (
+      <main>
+        <SearchBar />
 
-      <ProductWrapper as="section">
-        <SectionTitle title={"Product Name"} />
-        <Card
-          direction={{ base: "column", md: "row" }}
-          overflow="hidden"
-          variant="outline"
-          maxW="lg"
-          className="product-card"
-        >
-          <Image objectFit="contain" src={product.image} alt="Caffe Latte" />
+        <ProductWrapper as="section">
+          <SectionTitle title={"Product Name"} />
+          <Card
+            direction={{ base: "column", md: "row" }}
+            overflow="hidden"
+            variant="outline"
+            maxW="lg"
+            className="product-card"
+          >
+            <Image
+              objectFit="contain"
+              src={`${backend_URL}/uploads/${product.image}`}
+              alt={product.name}
+              className="card-image"
+            />
 
-          <Stack className="card-text">
-            <CardBody>
-              <Heading size="md" as="h3">
-                {product.title}
-              </Heading>
-              <div className="rating">
-                <p className="rating">{"⭐".repeat(product.rating)}</p>
-                <Link to="/">
-                  <MdOutlineModeComment />
-                  Read reviews(4)
-                </Link>
-                <Link to="/">
-                  <PiPencilSimpleLineThin />
-                  Write a review
-                </Link>
-              </div>
-              <h2 className="price">${product.price}</h2>
+            <Stack className="card-text">
+              <CardBody>
+                <Heading size="md" as="h3">
+                  {product.name}
+                </Heading>
+                <div className="rating">
+                  <p className="rating">{"⭐".repeat(product.rating || 1)}</p>
+                  <button
+                    onClick={() => {
+                      changeView("reviews");
+                      setShowPanel(true);
+                    }}
+                  >
+                    <MdOutlineModeComment />
+                    Read reviews(4)
+                  </button>
+                  <button
+                    onClick={() => {
+                      changeView("reviews");
+                      setShowPanel(true);
+                    }}
+                  >
+                    <PiPencilSimpleLineThin />
+                    Write a review
+                  </button>
+                </div>
+                <h2 className="price">${product.price}</h2>
 
-              <Text py="2" as="p" className="description">
-                {product.description}
-              </Text>
+                <Text py="2" as="p" className="description">
+                  {product.description}
+                </Text>
 
-              <form>
-                <FormControl className="form-control">
-                  <InputGroup className="input-group">
-                    <FormLabel>Quantity</FormLabel>
-                    <Input type="number" />
-                  </InputGroup>
-                  <button type="submit">Add To Cart</button>
-                </FormControl>
-              </form>
-            </CardBody>
+                <form onSubmit={handleAddToCart}>
+                  <FormControl className="form-control">
+                    <InputGroup className="input-group">
+                      <FormLabel>Quantity</FormLabel>
+                      <Input
+                        type="number"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                      />
+                    </InputGroup>
+                    <button type="submit">Add To Cart</button>
+                  </FormControl>
+                </form>
+              </CardBody>
 
-            <CardFooter className="card-footer">
-              <button className="wishlist-btn">
-                {" "}
-                <PiHeartBold /> Add to wishlist
-              </button>
-              <div className="share-links">
-                <Link to="/" className="facebook">
-                  <BiLogoFacebook />
-                  Share
+              <CardFooter className="card-footer">
+                <button className="wishlist-btn" onClick={handleAddToWishList}>
+                  {" "}
+                  <PiHeartBold /> Add to wishlist
+                </button>
+                <div className="share-links">
+                  <Link to="/" className="facebook">
+                    <BiLogoFacebook />
+                    Share
+                  </Link>
+                  <Link to="/" className="tweet">
+                    <BiLogoTwitter />
+                    tweet
+                  </Link>
+                  <Link to="/" className="google">
+                    <BiLogoGoogle />
+                    Google+
+                  </Link>
+                  <Link to="/" className="pinterest">
+                    <BiLogoPinterestAlt />
+                    pinterest
+                  </Link>
+                </div>
+                <Link to="/" className="card-guide">
+                  Care Guide
                 </Link>
-                <Link to="/" className="tweet">
-                  <BiLogoTwitter />
-                  tweet
-                </Link>
-                <Link to="/" className="google">
-                  <BiLogoGoogle />
-                  Google+
-                </Link>
-                <Link to="/" className="pinterest">
-                  <BiLogoPinterestAlt />
-                  pinterest
-                </Link>
-              </div>
-              <Link to="/" className="card-guide">
-                Care Guide
-              </Link>
-            </CardFooter>
+              </CardFooter>
+            </Stack>
+          </Card>
+          <Stack className="product-info">
+            <Box as="div" className="info-heading">
+              <h3
+                className={view === "details" ? "active" : ""}
+                onClick={() => changeView("details")}
+              >
+                Product Details
+              </h3>
+              <h3
+                className={view === "reviews" ? "active" : ""}
+                onClick={() => changeView("reviews")}
+              >
+                Reviews
+              </h3>
+            </Box>
+            {view === "reviews" ? (
+              <Box as="div" className="review">
+                <p className="grade">
+                  <strong>Grade</strong> {"⭐".repeat(5)}
+                </p>
+                <ul>
+                  <li>
+                    <h4>postthemes</h4>
+                    <p>03/10/2019</p>
+                  </li>
+                  <li>
+                    <h4>Palaza</h4>
+                    <p>themes</p>
+                  </li>
+                </ul>
+                <button
+                  className="write-review-btn"
+                  onClick={toggleReviewPanel}
+                >
+                  Write Your Review!
+                </button>
+                {showPanel && <WriteReviewForm />}
+              </Box>
+            ) : (
+              <Box as="div" className="details">
+                <p>{product.longDescription}</p>
+              </Box>
+            )}
           </Stack>
-        </Card>
-        <Stack className="product-info">
-          <Box as="div" className="info-heading">
-            <h3
-              className={view === "details" ? "active" : ""}
-              onClick={() => changeView("details")}
-            >
-              Product Details
-            </h3>
-            <h3
-              className={view === "reviews" ? "active" : ""}
-              onClick={() => changeView("reviews")}
-            >
-              Reviews
-            </h3>
-          </Box>
-          {view === "reviews" ? (
-            <Box as="div" className="review">
-              <p className="grade">
-                <strong>Grade</strong> {"⭐".repeat(5)}
-              </p>
-              <ul>
-                <li>
-                  <h4>postthemes</h4>
-                  <p>03/10/2019</p>
-                </li>
-                <li>
-                  <h4>Palaza</h4>
-                  <p>themes</p>
-                </li>
-              </ul>
-              <button className="write-review-btn" onClick={toggleReviewPanel}>
-                Write Your Review!
-              </button>
-              {showPanel && <WriteReviewForm />}
-            </Box>
-          ) : (
-            <Box as="div" className="details">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-                quibusdam atque laboriosam eius eos natus voluptates tempore. Ex
-                dolor possimus, recusandae cupiditate esse molestiae minus
-                delectus expedita debitis sint corporis eveniet placeat labore
-                minima dignissimos magnam explicabo, eius vitae neque dolorem
-                tenetur cum. Veniam voluptatum repellendus adipisci dolores
-                provident vitae!
-              </p>
-            </Box>
-          )}
-        </Stack>
-      </ProductWrapper>
-    </main>
+        </ProductWrapper>
+      </main>
+    )
   );
 }
 
@@ -256,7 +316,7 @@ const ProductWrapper = styled(Box)`
     flex-wrap: wrap;
     margin-top: 5px;
 
-    a {
+    button {
       display: flex;
       align-items: center;
       color: gray;
@@ -282,8 +342,13 @@ const ProductWrapper = styled(Box)`
     color: gray;
   }
 
+  .card-image {
+    margin: 5px;
+  }
+
   .card-text {
     background: white;
+    flex: 1;
   }
 
   form {
