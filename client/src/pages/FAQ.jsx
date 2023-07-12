@@ -80,8 +80,8 @@ export default function FAQ() {
 
   return (
     <MainWrapper>
-      <SectionTitle title="FAQ" />
       <img src={HeroImage} alt="" />
+      <SectionTitle title="FAQ" />
       <div className="content">
         <Accordion className="accordion">
           {questions.map((q) => {
