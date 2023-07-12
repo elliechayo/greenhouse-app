@@ -20,13 +20,13 @@ export const UserProvider = ({ children }) => {
   }
 
   const { data } = useQuery(GET_USER, {
-    variables: { id: decoded.id },
+    variables: { id: decoded?.id },
   });
 
   const initialState = { user: {} };
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  if (data && !state.user.id) {
+  if (data && !state.?user?.id) {
     dispatch({
       type: "SET_USER",
       payload: { user: data.user },
