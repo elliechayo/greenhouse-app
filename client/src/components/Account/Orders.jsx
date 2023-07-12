@@ -83,8 +83,13 @@ const SectionWrapper = styled.section`
 
     & a {
       color: white;
-      background: #333;
+      background: var(--green-medium);
       padding: 10px;
+      border-radius: 5px;
+
+      &:hover {
+        background: var(--dark-bg);
+      }
     }
   }
 `;
