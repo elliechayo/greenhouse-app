@@ -343,7 +343,7 @@ const SubscribeWrapper = styled(Box)`
 
 const SellPlantWrapper = styled(Box)`
   margin: 60px auto 0;
-  background: url(${(props) => props.imagepath});
+  background: url(${(props) => props.imagepath}) ;
   background-size: cover;
   background-position: left;
   display: flex;
@@ -352,8 +352,8 @@ const SellPlantWrapper = styled(Box)`
   align-items: center;
   min-height: 500px;
   padding: 50px 5px;
-
-    
+  
+  
   @media (max-width: 610px) {
     justify-content: center;
     background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0,0,0,0.8)), url(${(
