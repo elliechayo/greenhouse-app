@@ -5,6 +5,7 @@ import App from "./App";
 // graphql deps
 import { ApolloProvider } from "@apollo/client";
 import client from "./graphql/apolloClient";
+import * as serviceWorker from "./serviceWorker.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,3 +13,5 @@ root.render(
     <App />
   </ApolloProvider>
 );
+
+serviceWorker.register();
