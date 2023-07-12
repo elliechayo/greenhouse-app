@@ -26,7 +26,7 @@ export const UserProvider = ({ children }) => {
   const initialState = { user: {} };
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  if (data && !state.?user?.id) {
+  if (data && !state?.user?.id) {
     dispatch({
       type: "SET_USER",
       payload: { user: data.user },
