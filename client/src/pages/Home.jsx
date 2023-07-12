@@ -46,7 +46,7 @@ export default function Home() {
       id: 1,
       title: "Category 1",
       link: "/shop",
-      subtitle: "Ceder Trees",
+      subtitle: "Cedar Trees",
       image: Category1Image,
     },
     {
