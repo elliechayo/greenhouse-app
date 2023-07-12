@@ -117,7 +117,7 @@ export default function EachProduct() {
         <SearchBar />
 
         <ProductWrapper as="section">
-          <SectionTitle title={"Product Name"} />
+          <SectionTitle title={product.name} />
           <Card
             direction={{ base: "column", md: "row" }}
             overflow="hidden"
