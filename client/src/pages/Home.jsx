@@ -235,9 +235,10 @@ const CTAButton = styled.button`
 `;
 
 const HeroWrapper = styled(Box)`
-  background: url(${HeroBackground});
+  background: url(${HeroBackground}) #f1f1f1;
   background-position: bottom;
-  background-size: cover;
+  background-size: 100%;
+  background-repeat: no-repeat;
   min-height: 450px;
   max-width: 1200px;
   margin: 0 auto;
@@ -353,8 +354,14 @@ const SellPlantWrapper = styled(Box)`
   padding: 50px 5px;
 
     
-  @media (max-width: 498px) {
-    justify-content: flex-start;
+  @media (max-width: 610px) {
+    justify-content: center;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0,0,0,0.8)), url(${(
+      props
+    ) => props.imagepath}) ;
+    background-position: left;
+    background-size: cover;
+    color: white;
   }
 
   & h3 {
