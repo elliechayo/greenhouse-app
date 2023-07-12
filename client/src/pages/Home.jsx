@@ -45,28 +45,28 @@ export default function Home() {
     {
       id: 1,
       title: "Category 1",
-      link: "/",
+      link: "/shop",
       subtitle: "Fig Trees",
       image: Category1Image,
     },
     {
       id: 2,
       title: "Category 2",
-      link: "/",
+      link: "/shop",
       subtitle: "Maple Trees",
       image: Category2Image,
     },
     {
       id: 3,
       title: "Category 3",
-      link: "/",
+      link: "/shop",
       subtitle: "Shrub Trees",
       image: Category3Image,
     },
     {
       id: 4,
       title: "Category 4",
-      link: "/",
+      link: "/shop",
       subtitle: "Fruits Trees",
       image: Category4Image,
     },
@@ -78,7 +78,7 @@ export default function Home() {
       title: "Choosing the Perfect Indoor Plants for Your Home",
       date: "Feb 28, 2023",
       shortDescription:
-      "Bringing the beauty of nature indoors is a delightful way to enhance your living space while reaping the numerous benefits that plants offer.",
+        "Bringing the beauty of nature indoors is a delightful way to enhance your living space while reaping the numerous benefits that plants offer.",
       link: "/blog",
       image: BlogPostImage1,
     },
@@ -87,7 +87,7 @@ export default function Home() {
       title: "Enhancing the Health and Beauty of Your Trees",
       date: "July 11, 2023",
       shortDescription:
-      "Pruning plays a vital role in maintaining the health, aesthetics, and structural integrity of trees. With proper pruning techniques, you can enhance your trees.",
+        "Pruning plays a vital role in maintaining the health, aesthetics, and structural integrity of trees. With proper pruning techniques, you can enhance your trees.",
       link: "/blog",
       image: BlogPostImage2,
     },
@@ -96,7 +96,7 @@ export default function Home() {
       title: "Creating a Bee-Friendly Garden",
       date: "May 20, 2023",
       shortDescription:
-       "Creating a bee-friendly garden is not only a rewarding and beautiful endeavor but also a crucial step towards supporting the vital role that pollinators play in our ecosystem.",
+        "Creating a bee-friendly garden is not only a rewarding and beautiful endeavor but also a crucial step towards supporting the vital role that pollinators play in our ecosystem.",
       link: "/blog",
       image: BlogPostImage3,
     },
@@ -143,7 +143,9 @@ export default function Home() {
       <BlogPostWrapper as="section">
         <SectionTitle title="From Our Blog" />
         <p className="subtitle">
-        Explore a treasure trove of plant care tips, gardening inspiration, and captivating articles that will nurture your love for all things botanical.
+          Explore a treasure trove of plant care tips, gardening inspiration,
+          and captivating articles that will nurture your love for all things
+          botanical.
         </p>
         <BlogPostCards>
           {blogPosts.map(
@@ -183,7 +185,8 @@ export default function Home() {
           Get <span className="strong">20% Off</span> Your Next Order
         </h3>
         <p className="small">
-        Unlock exclusive discounts and stay in the loop with our latest offers by subscribing to our newsletter.
+          Unlock exclusive discounts and stay in the loop with our latest offers
+          by subscribing to our newsletter.
         </p>
         <form>
           <input type="email" placeholder="Enter Your Email..." />
@@ -269,8 +272,6 @@ const BlogPostWrapper = styled(Box)`
     font-weight: 600;
     color: gray;
     font-size: 14px;
-
-   
   }
 `;
 
@@ -280,8 +281,6 @@ const BlogPostCards = styled.ul`
   justify-content: center;
   align-items: center;
   gap: 30px;
- 
-  
 `;
 
 const SubscribeWrapper = styled(Box)`
@@ -353,6 +352,11 @@ const SellPlantWrapper = styled(Box)`
   min-height: 500px;
   padding: 50px 5px;
 
+    
+  @media (max-width: 498px) {
+    justify-content: flex-start;
+  }
+
   & h3 {
     font-weight: bold;
     font-size: clamp(38px, 5vw, 48px);
@@ -386,4 +390,5 @@ const SellPlantWrapper = styled(Box)`
   @media (max-width: 768px) {
     background-position: -250px;
   }
+
 `;
