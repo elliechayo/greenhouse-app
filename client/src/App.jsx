@@ -25,7 +25,7 @@ import Failure from "./pages/payment/Failure";
 import Success from "./pages/payment/Success";
 import ScrollToTop from "./components/shared/ScrollToTop";
 
-import * as ServiceWorker from "./serviceWorker";
+
 
 export default function App() {
   return (
@@ -58,4 +58,4 @@ export default function App() {
   );
 }
 
-ServiceWorker.register();
+
