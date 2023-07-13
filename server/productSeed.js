@@ -1,15 +1,3 @@
-// assets
-import ProductImage1 from "../assets/products/product1.jpg";
-import ProductImage2 from "../assets/products/product2.jpg";
-import ProductImage3 from "../assets/products/product3.jpg";
-import ProductImage4 from "../assets/products/product4.jpg";
-import ProductImage5 from "../assets/products/product5.jpg";
-import ProductImage6 from "../assets/products/product6.jpg";
-import ProductImage7 from "../assets/products/product7.jpg";
-import ProductImage8 from "../assets/products/product8.jpg";
-import ProductImage9 from "../assets/products/product9.jpg";
-
-
 require("dotenv").config();
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -19,25 +7,23 @@ const Product = require("./models/Product");
 const connectDB = require("./config/db");
 connectDB(MONGO_URI);
 
-db.once('open', async () => {
-  await product.deleteMany();
-
-const products = await Product.insertMany([
+const products = [
   {
     name: "Philodendron",
     category: "Maple Trees",
     description: "This is a hybrid, self-heading philodendron.",
-    longDescription: "This is a hybrid, self-heading philodendron. It has stunning foliage that starts off in brilliant red tones and age into dark greens. Native to the rainforests of South America, it's adaptable and extremely forgiving",
+    longDescription:
+      "This is a hybrid, self-heading philodendron. It has stunning foliage that starts off in brilliant red tones and age into dark greens. Native to the rainforests of South America, it's adaptable and extremely forgiving",
     price: "20.75",
-    image: ProductImage1,
+    image: "test.jpg",
     rating: 5,
-    link: "/products/1",
     stockQuantity: 2,
   },
   {
     name: "Black Eyed Susan",
     category: "Shrub Trees",
-    description: "With dark, velvety leaves and contrasting silver veins, this Alocasia will catch the eye of any plant lover. ",
+    description:
+      "With dark, velvety leaves and contrasting silver veins, this Alocasia will catch the eye of any plant lover. ",
     longDescription: "SM: ~7-10 inch tall and a 4 inch pot",
     price: "75.65",
     image: "test.jpg",
@@ -106,19 +92,21 @@ const products = await Product.insertMany([
     image: "test.jpg",
     stockQuantity: 2,
   },
-]);
+];
 
-console.log('products seeded');
-mongoose.disconnect();
-process.exit(0);
-    })
-    .catch((err) => console.error(err));
-  
-
-
- 
+async function seedProducts() {
+  try {
+    await Product.deleteMany();
+    await Product.insertMany(products);
+    console.log("Database seeded");
+    await mongoose.disconnect();
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    await mongoose.disconnect();
+    process.exit(1);
+  }
+  mongoose.disconnect();
+}
 
 seedProducts();
-
-console.log('products seeded');
-
