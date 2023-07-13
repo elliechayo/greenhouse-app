@@ -46,7 +46,7 @@ export default function App() {
             <Route path="/payment/success" element={<Success />} />
             <Route path="/payment/failure" element={<Failure />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
-            <Route path="/how-to-post-a-pant" element={<HowToPostAPlant />} />
+            <Route path="/how-to-post-a-plant" element={<HowToPostAPlant />} />
             <Route path="/" element={<Home />} />
           </Routes>
           <Footer />
@@ -57,5 +57,3 @@ export default function App() {
     </UserProvider>
   );
 }
-
-

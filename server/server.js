@@ -18,7 +18,6 @@ connectDB(MONGO_URI);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  cors: cors(),
 });
 
 async function startServer() {
@@ -26,9 +25,11 @@ async function startServer() {
 
   // apply the apollo server middleware to the app
   const app = express();
+  app.use(cors({
+    origin: 'https://greenhouse-team-c08c7033be08.herokuapp.com'
+  }));
   app.use(express.urlencoded({ extended: true }));
-  app.use(cors());
-
+  
   app.use(express.static(path.resolve(__dirname, "./public")));
   app.use(express.static(path.resolve(__dirname, "../client/build")));
 
