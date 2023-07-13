@@ -16,8 +16,6 @@ const products = [
     price: "20.75",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 4,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
   {
     name: "Test Product 2",
@@ -27,8 +25,6 @@ const products = [
     price: "75.65",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 3,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
   {
     name: "Test Product 3",
@@ -38,8 +34,6 @@ const products = [
     price: "23.75",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 5,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
   {
     name: "Test Product 4",
@@ -49,8 +43,6 @@ const products = [
     price: "23.75",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 4,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
   {
     name: "Test Product 5",
@@ -60,8 +52,6 @@ const products = [
     price: "23.75",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 2,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
   {
     name: "Test Product 6",
@@ -71,8 +61,6 @@ const products = [
     price: "100.55",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 5,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
   {
     name: "Test Product 7",
@@ -82,8 +70,6 @@ const products = [
     price: "15.99",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 3,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
   {
     name: "Test Product 8",
@@ -102,8 +88,6 @@ const products = [
     price: "23.75",
     image: "test.jpg",
     stockQuantity: 2,
-    rating: 4,
-    createdBy: "64ae90333a01a66f5f2e8411"
   },
 ];
 
