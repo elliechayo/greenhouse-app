@@ -18,6 +18,8 @@ connectDB(MONGO_URI);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  cors: cors()
+  
 });
 
 async function startServer() {
