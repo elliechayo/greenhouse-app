@@ -1,3 +1,15 @@
+// assets
+import ProductImage1 from "../assets/products/product1.jpg";
+import ProductImage2 from "../assets/products/product2.jpg";
+import ProductImage3 from "../assets/products/product3.jpg";
+import ProductImage4 from "../assets/products/product4.jpg";
+import ProductImage5 from "../assets/products/product5.jpg";
+import ProductImage6 from "../assets/products/product6.jpg";
+import ProductImage7 from "../assets/products/product7.jpg";
+import ProductImage8 from "../assets/products/product8.jpg";
+import ProductImage9 from "../assets/products/product9.jpg";
+
+
 require("dotenv").config();
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -7,21 +19,26 @@ const Product = require("./models/Product");
 const connectDB = require("./config/db");
 connectDB(MONGO_URI);
 
-const products = [
+db.once('open', async () => {
+  await product.deleteMany();
+
+const products = await Product.insertMany([
   {
-    name: "Test Product 1",
+    name: "Philodendron",
     category: "Maple Trees",
-    description: "This is a test product",
-    longDescription: "This is a test product",
+    description: "This is a hybrid, self-heading philodendron.",
+    longDescription: "This is a hybrid, self-heading philodendron. It has stunning foliage that starts off in brilliant red tones and age into dark greens. Native to the rainforests of South America, it's adaptable and extremely forgiving",
     price: "20.75",
-    image: "test.jpg",
+    image: ProductImage1,
+    rating: 5,
+    link: "/products/1",
     stockQuantity: 2,
   },
   {
-    name: "Test Product 2",
+    name: "Black Eyed Susan",
     category: "Shrub Trees",
-    description: "This is a test product",
-    longDescription: "This is a test product",
+    description: "With dark, velvety leaves and contrasting silver veins, this Alocasia will catch the eye of any plant lover. ",
+    longDescription: "SM: ~7-10 inch tall and a 4 inch pot",
     price: "75.65",
     image: "test.jpg",
     stockQuantity: 2,
@@ -89,16 +106,19 @@ const products = [
     image: "test.jpg",
     stockQuantity: 2,
   },
-];
+]);
 
-async function seedProducts() {
-  Product.insertMany(products)
-    .then(() => {
-      console.log("Products seeded");
-      mongoose.disconnect();
-      process.exit(0);
+console.log('products seeded');
+mongoose.disconnect();
+process.exit(0);
     })
     .catch((err) => console.error(err));
-}
+  
+
+
+ 
 
 seedProducts();
+
+console.log('products seeded');
+
