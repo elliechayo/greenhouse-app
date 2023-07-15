@@ -386,7 +386,7 @@ const ProductWrapper = styled(Box)`
       flex: 1;
       padding: 12px;
       font-weight: bold;
-      border-radius: 999px;
+      border-radius: 5px;
       background: var(--green-medium);
       color: white;
 
