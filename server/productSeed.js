@@ -1,3 +1,5 @@
+import ProductImage1 from "../assets/products/product2.jpg";
+
 require("dotenv").config();
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -9,13 +11,13 @@ connectDB(MONGO_URI);
 
 const products = [
   {
-    name: "Philodendron",
-    category: "Maple Trees",
+    name: "Philodendron2",
+    category: "category-1",
     description: "This is a hybrid, self-heading philodendron.",
     longDescription:
-      "This is a hybrid, self-heading philodendron. It has stunning foliage that starts off in brilliant red tones and age into dark greens. Native to the rainforests of South America, it's adaptable and extremely forgiving",
+    "This is a hybrid, self-heading philodendron. It has stunning foliage that starts off in brilliant red tones and age into dark greens. Native to the rainforests of South America, it's adaptable and extremely forgiving",
     price: "20.75",
-    image: "test.jpg",
+    image: ProductImage2,
     rating: 5,
     stockQuantity: 2,
   },
