@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 const H2 = styled.h2`
-  font-size: clamp(32px, 5vw, 48px);
+  font-size: clamp(32px, 5vw, 30px);
   font-weight: bolder;
   text-transform: uppercase;
   position: relative;
