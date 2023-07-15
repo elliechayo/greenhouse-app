@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { backend_URL, homepage_URL, priceId } from "../../config";
+import { backend_URL, priceId } from "../../config";
 import styled from "@emotion/styled";
 import { useMutation } from "@apollo/client";
 import { REMOVE_FROM_CART } from "../../graphql/queries";
@@ -48,9 +48,9 @@ export default function Cart({ user, dispatch, setUser }) {
             quantity: 1,
           },
         ],
-        successUrl: `${homepage_URL}/payment/success`,
+        successUrl: `${backend_URL}/payment/success`,
         mode: "payment",
-        cancelUrl: `${homepage_URL}/payment/failure`,
+        cancelUrl: `${backend_URL}/payment/failure`,
       });
       console.log(error);
       return;
@@ -150,7 +150,11 @@ const SectionWrapper = styled.section`
       border-radius: 5px;
       color: white;
       font-weight: bold;
-      padding: 10px;
+      padding: 12px;
+
+      &:hover {
+        background: var(--dark-bg);
+      }
     }
 
     td img {
