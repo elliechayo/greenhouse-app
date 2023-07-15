@@ -4,17 +4,15 @@ import { useContext, useState } from "react";
 import UserContext from "../../context/user/userContext";
 
 // components
+import ReactPaginate from "react-paginate";
 import ProductCard from "./ProductCard";
 
 export default function ProductsList({ productsCount, products, setProducts }) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const { user } = useContext(UserContext);
 
-  const changePage = (i, e) => {
+  const changePage = (i) => {
     setCurrentIdx(productsCount * i);
-    const children = [...e.target.parentElement.children];
-    children.forEach((c) => c.classList.remove("active"));
-    e.target.classList.add("active");
   };
 
   const handleSort = (e) => {
@@ -62,16 +60,17 @@ export default function ProductsList({ productsCount, products, setProducts }) {
           })}
       </ProductsUL>
       <PaginationWrapper>
-        {/* Calculate how many pages should be there based on the products length and the products count to show on each page */}
-        {new Array(Math.ceil(products.length / productsCount))
-          .fill(0)
-          .map((_, i) => {
-            return (
-              <li key={i} onClick={(e) => changePage(i, e)}>
-                {i + 1}
-              </li>
-            );
-          })}
+        <ReactPaginate
+          nextLabel=">>"
+          pageCount={Math.ceil(products.length / productsCount)}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={0}
+          onPageChange={(e) => changePage(e.selected)}
+          activeClassName="active"
+          breakClassName="break-elem"
+          disabledClassName="disabled"
+          previousLabel="<<"
+        />
       </PaginationWrapper>
     </div>
   );
@@ -94,24 +93,52 @@ const ProductsUL = styled.ul`
   gap: 60px;
 `;
 
-const PaginationWrapper = styled.ul`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+const PaginationWrapper = styled.div`
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 
-  & li {
-    padding: 7px 12px;
-    background: white;
-    border: 2px solid lightgray;
-    color: lightgray;
-    border-radius: 2px;
-    cursor: pointer;
-    font-size: 14px;
-  }
+    & li {
+      padding: 7px 14px;
+      background: white;
+      border: 2px solid lightgray;
+      color: lightgray;
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-  & li.active {
-    border-color: var(--green-light);
-    color: var(--green-light);
+    & li.active {
+      border-color: var(--green-light);
+      color: var(--green-light);
+    }
+
+    & li a {
+      height: 100%;
+      display: block;
+      width: 100%;
+    }
+
+    & li.disabled {
+      border-color: var(--light-bg);
+      color: var(--light-bg);
+      display: none;
+    }
+
+    & li.break-elem {
+      display: none;
+    }
+
+    & li:first-of-type {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    & li:last-of-type {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
   }
 `;
