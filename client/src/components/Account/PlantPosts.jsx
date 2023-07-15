@@ -1,11 +1,13 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
-import { GET_PRODUCTS_BY_USER } from "../../graphql/queries";
+import { GET_PRODUCTS_BY_USER, REMOVE_PRODUCT } from "../../graphql/queries";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function PlantPosts({ user }) {
   const [plantPosts, setPlantPosts] = useState(null);
+  const [removeProduct] = useMutation(REMOVE_PRODUCT);
   const { data, loading } = useQuery(GET_PRODUCTS_BY_USER, {
     variables: { id: user.id },
     fetchPolicy: "no-cache",
@@ -18,6 +20,26 @@ export default function PlantPosts({ user }) {
   if (loading) {
     return <>Loading...</>;
   }
+
+  const handleDelete = async (id) => {
+    try {
+      const { data } = await removeProduct({
+        variables: {
+          productId: id,
+        },
+      });
+
+      if (data?.removeProduct?.id) {
+        setPlantPosts(plantPosts.filter((e) => e.id !== data.removeProduct.id));
+        toast.success("Post deleted");
+      } else {
+        toast.error("Error while deleting post");
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Error while deleting post");
+    }
+  };
 
   return (
     <SectionWrapper>
@@ -40,9 +62,9 @@ export default function PlantPosts({ user }) {
                 <td>{new Date(+p.createdAt).toDateString()}</td>
                 <td>{p.stockQuantity > 0 ? "Posted" : "Sold"}</td>
                 <td>${p.price}</td>
-                <td>
-                  <Link to={p.link}>View</Link>
-                  <Link to={p.deleteLink}>Delete</Link>
+                <td className="btn-group">
+                  <Link to={`/products/${p.id}`}>View</Link>
+                  <button onClick={() => handleDelete(p.id)}>Delete</button>
                 </td>
               </tr>
             );
@@ -81,11 +103,21 @@ const SectionWrapper = styled.section`
       padding: 10px;
     }
 
-    & a {
+    .btn-group {
+      display: flex;
+    }
+
+    & a,
+    & button {
       color: white;
       background: var(--green-medium);
-      padding: 10px;
+      padding: 12px;
       margin: 0 5px;
+      border: none;
+
+      &:hover {
+        background: var(--dark-bg);
+      }
     }
   }
 `;
