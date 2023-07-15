@@ -86,7 +86,7 @@ export default function ProductCard({ product, user }) {
       <Stack className="text-section">
         <h3 className="title">{product.name}</h3>
         <h2 className="price">${product.price}</h2>
-        <p>{"⭐".repeat(product.rating)}</p>
+        <p>{product.rating > 0 ? "⭐".repeat(product.rating) : "No Rating"}</p>
       </Stack>
     </ProductLI>
   );
