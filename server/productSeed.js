@@ -11,13 +11,13 @@ connectDB(MONGO_URI);
 
 const products = [
   {
-    name: "Philodendron2",
+    name: "Philodendron3",
     category: "category-1",
     description: "This is a hybrid, self-heading philodendron.",
     longDescription:
     "This is a hybrid, self-heading philodendron. It has stunning foliage that starts off in brilliant red tones and age into dark greens. Native to the rainforests of South America, it's adaptable and extremely forgiving",
     price: "20.75",
-    image: ProductImage2,
+    image:"product2.jpg",
     rating: 5,
     stockQuantity: 2,
   },
