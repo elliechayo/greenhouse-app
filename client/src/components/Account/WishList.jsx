@@ -147,7 +147,8 @@ const SectionWrapper = styled.section`
       background: var(--green-medium);
       border-radius: 5px;
       color: white;
-      padding: 10px;
+      padding: 12px;
+      font-weight: bold;
 
       &:hover {
         background: var(--dark-bg);
