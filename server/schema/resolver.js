@@ -84,6 +84,11 @@ const resolvers = {
       return { token, user };
     },
 
+    removeProduct: async (_, { productId }) => {
+      const removedDoc = await Product.findOneAndDelete({ _id: productId });
+      return removedDoc;
+    },
+
     updateUser: async (
       _,
       {
