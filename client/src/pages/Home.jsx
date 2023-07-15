@@ -336,7 +336,7 @@ const SubscribeWrapper = styled(Box)`
       
       /* Hover styles */
       &:hover {
-        background: darkgreen;
+        background: var(--dark-bg);
     }
    
   }
