@@ -63,17 +63,22 @@ const FormWrapper = styled(Box)`
     input {
       border: 1px solid lightgray;
       background: var(--light-bg);
-      padding: 8px;
+      padding: 12px;
       flex: 1;
       margin: 0 0 0 20px;
     }
 
     button {
-      padding: 8px;
-      background: #333;
+      padding: 12px;
+      background: var(--green-medium);
       color: white;
       flex: 0.5;
-      border: 1px solid #333;
+      font-weight: bold;
+      border: 1px solid var(--green-medium);
+
+      &:hover {
+        background: var(--dark-bg);
+      }
     }
   }
 
