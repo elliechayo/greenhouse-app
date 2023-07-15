@@ -174,7 +174,7 @@ export default function Home() {
           <Box as="div">
             <h3>Post a Plant</h3>
             <p>Find your plant the home it deserves</p>
-            <Link to="/how-to-post-a-pant">Learn How &gt;</Link>
+            <Link to="/how-to-post-a-plant">Learn How &gt;</Link>
           </Box>
         </SellPlantWrapper>
       </div>
