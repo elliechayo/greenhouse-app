@@ -62,12 +62,17 @@ export default function EachProduct() {
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
+    if (!user.id) {
+      toast.error("Please login to add items to cart");
+      return;
+    }
+
     try {
       const { data } = await addToCart({
         variables: {
           productId: id,
           userId: user.id,
-          quantity,
+          quantity: quantity.toString(),
         },
       });
       if (data?.addToCart) {
@@ -114,8 +119,6 @@ export default function EachProduct() {
   return (
     product && (
       <main>
-        <SearchBar />
-
         <ProductWrapper as="section">
           <SectionTitle title={product.name} />
           <Card
@@ -202,12 +205,17 @@ export default function EachProduct() {
                     pinterest
                   </Link>
                 </div>
-                <Link to="/" className="card-guide">
+                <Link to="#" className="card-guide">
                   Care Guide
                 </Link>
               </CardFooter>
             </Stack>
           </Card>
+          <Stack className="continue-btn-wrapper">
+            <Link to={-1} className="continue-btn">
+              Contiue Shopping
+            </Link>
+          </Stack>
           <Stack className="product-info">
             <Box as="div" className="info-heading">
               <h3
@@ -376,10 +384,15 @@ const ProductWrapper = styled(Box)`
 
     button {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
+      font-weight: bold;
       border-radius: 999px;
       background: var(--green-medium);
       color: white;
+
+      &:hover {
+        background: var(--dark-bg);
+      }
     }
   }
 
@@ -492,5 +505,22 @@ const ProductWrapper = styled(Box)`
   .info-heading h3.active {
     color: var(--green-medium);
     text-decoration: underline;
+  }
+
+  .continue-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & .continue-btn {
+      padding: 12px;
+      background: var(--light-bg);
+      border: 1px solid lightgray;
+      border-radius: 5px;
+
+      &:hover {
+        background: lightgray;
+      }
+    }
   }
 `;
