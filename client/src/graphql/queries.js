@@ -429,3 +429,11 @@ export const ADD_ORDER = gql`
     }
   }
 `;
+
+export const REMOVE_PRODUCT = gql`
+  mutation Mutation($productId: ID!) {
+    removeProduct(productId: $productId) {
+      id
+    }
+  }
+`;
