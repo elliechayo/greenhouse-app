@@ -94,6 +94,7 @@ const typeDefs = gql`
       createdAt: String
     ): Product
 
+    removeProduct(productId: ID!): Product
     addToWishList(productId: ID!, userId: ID!): User
     removeFromWishList(productId: ID!, userId: ID!): User
     removeFromCart(productId: ID!, userId: ID!): User
