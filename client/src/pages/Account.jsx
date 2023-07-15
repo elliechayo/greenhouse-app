@@ -44,7 +44,7 @@ export default function Account() {
     setUser(data.user);
   }
 
-  if (!oldUser.id) {
+  if (!oldUser.id && !loading) {
     navigate("/login");
   }
 
