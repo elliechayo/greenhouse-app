@@ -25,7 +25,8 @@ import Failure from "./pages/payment/Failure";
 import Success from "./pages/payment/Success";
 import ScrollToTop from "./components/shared/ScrollToTop";
 
-
+// PWA
+import * as serviceWorker from "./serviceWorker";
 
 export default function App() {
   return (
@@ -52,8 +53,10 @@ export default function App() {
           <Footer />
           <ScrollToTop />
         </Router>
-        <ToastContainer />
+        <ToastContainer position="top-center" autoClose={1000} />
       </ChakraProvider>
     </UserProvider>
   );
 }
+
+serviceWorker.register();
