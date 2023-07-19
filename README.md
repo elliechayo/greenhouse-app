@@ -1,5 +1,3 @@
-Here is a draft README for your plant application project:
-
 # Greenhouse
 
 Greenhouse is an e-commerce plant store allowing users to buy and sell plants online. 
